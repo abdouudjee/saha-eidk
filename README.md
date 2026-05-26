@@ -22,7 +22,6 @@ Clone the codebase to your local machine using git:
 git clone https://github.com/abdouudjee/saha-eidk.git
 cd saha-eidk
 ```
-````
 
 ### 3. Initialize a Virtual Environment
 
