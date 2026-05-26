@@ -2,6 +2,8 @@
 # you get those from https://my.telegram.org/apps
 api_id = 123
 api_hash = "a hash"
+greet="hello!"
+
 
 import asyncio
 import keyboard
@@ -71,7 +73,7 @@ with TelegramClient('name', api_id, api_hash) as client:
                 if event.event_type == keyboard.KEY_DOWN:
                     if event.name == 'enter':
                         print(f"{GREEN}Greeting sent to {contact}!{RESET}")    
-                        await client.send_message(user.id, "Hello!")
+                        await client.send_message(user.id, greet)
                         break
                     elif event.name == 'backspace' or event.name == "delete":
                         print(f"{RED}Skipped.{RESET}")
