@@ -7,7 +7,7 @@ greet="hello!"
 import os
 import sys
 import asyncio
-import keyboard
+from readchar import readkey, key
 from arabic_reshaper import reshape
 from bidi.algorithm import get_display
 from telethon.sync import TelegramClient
@@ -84,25 +84,24 @@ with TelegramClient('name', api_id, api_hash) as client:
             abort = False
             while True:
                 # Read a single key down event
-                event = keyboard.read_event()
-                
-                if event.event_type == keyboard.KEY_DOWN:
-                    if event.name == 'enter':
-                        print(f"{GREEN}Greeting sent to {contact}!{RESET}")    
-                        await client.send_message(user.id, greet)
-                        # Append the user ID to tracking file if they weren't in it yet
-                        if user_id not in sent_ids:
-                            sent_ids.add(user_id)
-                            with open(HISTORY_FILE, "a") as f:
-                                f.write(f"{user_id}\n")
-                        break
-                    elif event.name == 'backspace' or event.name == "delete":
-                        print(f"{RED}Skipped.{RESET}")
-                        break
-                    elif event.name == "esc":
-                        print(f"\n{YELLOW}Aborting execution...{RESET}")
-                        abort = True
-                        break
+                k = readkey()
+
+                if k == key.ENTER:
+                    print(f"{GREEN}Greeting sent to {contact}!{RESET}")    
+                    await client.send_message(user.id, greet)
+                    # Append the user ID to tracking file if they weren't in it yet
+                    if user_id not in sent_ids:
+                        sent_ids.add(user_id)
+                        with open(HISTORY_FILE, "a") as f:
+                            f.write(f"{user_id}\n")
+                    break
+                elif k == key.BACKSPACE or k == key.DELETE:
+                    print(f"{RED}Skipped.{RESET}")
+                    break
+                elif k == key.ESC:
+                    print(f"\n{YELLOW}Aborting execution...{RESET}")
+                    abort = True
+                    break
                 # Yield control to allow async tasks to run smoothly
                 await asyncio.sleep(0.01)  
             if abort:
